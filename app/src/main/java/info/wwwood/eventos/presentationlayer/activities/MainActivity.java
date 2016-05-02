@@ -9,14 +9,31 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.text.ParseException;
+
 import info.wwwood.eventos.R;
+import info.wwwood.eventos.model.servicelayer.manager.ServiceManager;
+import info.wwwood.eventos.presentationlayer.androidextends.application.PueAndroidApplication;
 
 public class MainActivity extends AppCompatActivity {
+
+    private PueAndroidApplication app;
+    private ServiceManager serviceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        app=(PueAndroidApplication) getApplication();
+        serviceManager=app.getServiceManager();
+
+        try {
+            app.setEventos(serviceManager.getEventoService().createInitialLocalEventos());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
