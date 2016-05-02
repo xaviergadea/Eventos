@@ -36,6 +36,7 @@ public class EventoDAO implements IEventoDAO {
                     Context.MODE_PRIVATE) //MODE_PRIVATE SOBREESCRIU L'ARXIU SENCER. MODE_APPEND AFEGEIX CONTINGUT A L'ARXIU.
             );
             osw.write(eventosJSON); //escribim json a l'arxiu
+            osw.close();
 
         } catch (Exception ex){
             throw new RuntimeException("Error al guardar en disco el fichero eventos.json");

@@ -24,7 +24,7 @@ public class ServiceManager {
         flatFilePersistenceManager=(FlatFilePersistenceManager) PersistenceManager.getPersistenceManger(AppUtils.PersistenceTechnologies.FLAT_FILES,context);
         restPersistenceManager=(RestPersistenceManager) PersistenceManager.getPersistenceManger(AppUtils.PersistenceTechnologies.REST,context);
         sqlPersistenceManager=(SqlPersistenceManager) PersistenceManager.getPersistenceManger(AppUtils.PersistenceTechnologies.SQL,context);
-                
+
     }
 
     private Context context;
@@ -34,7 +34,7 @@ public class ServiceManager {
     //INICIALIZACIÓN DEL GESTOR DE SERVICIOS
     public IEventoService getEventoService(){
         if (eventoService==null){
-            eventoService = new EventoService();
+            eventoService = new EventoService(flatFilePersistenceManager,restPersistenceManager,sqlPersistenceManager);
         }
 
         return eventoService;

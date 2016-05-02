@@ -8,12 +8,28 @@ import java.util.List;
 import info.wwwood.eventos.model.businesslayer.entities.Evento;
 import info.wwwood.eventos.model.businesslayer.entities.Participante;
 import info.wwwood.eventos.model.businesslayer.entities.Sesion;
+import info.wwwood.eventos.model.persistencelayer.impl.flatfile.manager.FlatFilePersistenceManager;
+import info.wwwood.eventos.model.persistencelayer.impl.rest.manager.RestPersistenceManager;
+import info.wwwood.eventos.model.persistencelayer.impl.sql.manager.SqlPersistenceManager;
 import info.wwwood.eventos.model.servicelayer.api.IEventoService;
 
 /**
  * Created by android-ed1 on 02/05/2016.
  */
 public class EventoService implements IEventoService {
+
+    //Referencias a los manager de persistencia que inyecta el service manager
+    private FlatFilePersistenceManager flatFilePersistenceManager;
+    private RestPersistenceManager restPersistenceManager;
+    private SqlPersistenceManager sqlPersistenceManager;
+
+    public EventoService(FlatFilePersistenceManager flatFilePersistenceManager,RestPersistenceManager restPersistenceManager,SqlPersistenceManager sqlPersistenceManager)
+    {
+        this.flatFilePersistenceManager=flatFilePersistenceManager;
+        this.restPersistenceManager=restPersistenceManager;
+        this.sqlPersistenceManager=sqlPersistenceManager;
+    }
+
     @Override
     public List<Evento> createInitialLocalEventos() throws ParseException {
         List<Evento> eventos = new ArrayList<Evento>();
@@ -133,7 +149,9 @@ public class EventoService implements IEventoService {
         evento2.getSesiones().add(sesion22);
 
         //TODO PERSISTIR ESTOS EVENTOS EN ALGUNA TECNOLOGÍA DE PERSISTENCIA
-
+        flatFilePersistenceManager.getEventoDao().eventosSave(eventos);
+        //restPersistenceManager.getEventoDao().eventosSave(eventos);
+        //sqlPersistenceManager.getEventoDao().eventosSave(eventos);
         return eventos;
     }
 }
