@@ -12,9 +12,8 @@ public class Evento  extends EntityBase {
     private String nombre;
     private String descripcion;
     private int numeroPlazas;
-    private List<Corredor> inscritos;
+    private List<Participante> inscritos;
     private List<Sesion> sesiones;
-
 
     public String getNombre() {
         return nombre;
@@ -40,11 +39,11 @@ public class Evento  extends EntityBase {
         this.numeroPlazas = numeroPlazas;
     }
 
-    public List<Corredor> getInscritos() {
+    public List<Participante> getInscritos() {
         return inscritos;
     }
 
-    public void setInscritos(List<Corredor> inscritos) {
+    public void setInscritos(List<Participante> inscritos) {
         this.inscritos = inscritos;
     }
 
@@ -59,7 +58,7 @@ public class Evento  extends EntityBase {
         nombre=null;
         descripcion=null;
         numeroPlazas=0;
-        inscritos=new ArrayList<Corredor>(); //INICIALITZEM LA LLISTA BUIDA
+        inscritos=new ArrayList<Participante>(); //INICIALITZEM LA LLISTA BUIDA
         sesiones=new ArrayList<Sesion>(); //INICIALITZEM LA LLISTA BUIDA
     }
 }
