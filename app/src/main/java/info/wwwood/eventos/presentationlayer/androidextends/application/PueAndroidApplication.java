@@ -15,14 +15,25 @@ import info.wwwood.eventos.model.servicelayer.manager.ServiceManager;
 public class PueAndroidApplication extends Application {
     private ServiceManager serviceManager;
     private List<Evento> eventos;
+    private Evento evento;
 
     public List<Evento> getEventos() {
         return eventos;
+    }
+    public Evento getEvento() {
+        return evento;
     }
 
     public void setEventos(List<Evento> eventos) {
         this.eventos = eventos;
     }
+    public void setEvento(Evento evento) {
+
+        this.evento=evento;
+    }
+    /*public Evento getEventoByDorsal(String dorsal) {
+        this.evento = evento;
+    }*/
     public ServiceManager getServiceManager() {
         return serviceManager;
     }

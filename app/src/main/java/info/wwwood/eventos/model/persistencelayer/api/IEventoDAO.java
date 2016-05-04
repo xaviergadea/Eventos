@@ -9,6 +9,6 @@ import info.wwwood.eventos.model.businesslayer.entities.Evento;
  */
 public interface IEventoDAO {
     void eventosSave(List<Evento>eventos);
-
+    Evento getEventoByDorsal(String dorsal);
 
 }

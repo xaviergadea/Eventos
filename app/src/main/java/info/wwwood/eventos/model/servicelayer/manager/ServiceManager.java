@@ -39,5 +39,12 @@ public class ServiceManager {
 
         return eventoService;
     }
+    /*public IEventoService getEventoByDorsal(){
+        if (eventoService==null){
+            eventoService = new EventoService(flatFilePersistenceManager,restPersistenceManager,sqlPersistenceManager);
+        }
+
+        return eventoService;
+    }*/
    
 }

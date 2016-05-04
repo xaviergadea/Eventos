@@ -39,6 +39,7 @@ public class Evento  extends EntityBase {
         this.numeroPlazas = numeroPlazas;
     }
 
+
     public List<Participante> getInscritos() {
         return inscritos;
     }
