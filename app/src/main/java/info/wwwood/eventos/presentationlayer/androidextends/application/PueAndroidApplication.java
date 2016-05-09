@@ -6,7 +6,9 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.wwwood.eventos.model.businesslayer.entities.Asistencia;
 import info.wwwood.eventos.model.businesslayer.entities.Evento;
+import info.wwwood.eventos.model.businesslayer.entities.Sesion;
 import info.wwwood.eventos.model.servicelayer.manager.ServiceManager;
 
 /**
@@ -16,6 +18,8 @@ public class PueAndroidApplication extends Application {
     private ServiceManager serviceManager;
     private List<Evento> eventos;
     private Evento evento;
+    private Asistencia asistenciaActual;
+
 
     public List<Evento> getEventos() {
         return eventos;
@@ -37,5 +41,15 @@ public class PueAndroidApplication extends Application {
         eventos=new ArrayList<Evento>();
         serviceManager=new ServiceManager(this);
         evento=null;
+        asistenciaActual=null;
+    }
+
+
+    public Asistencia getAsistenciaActual() {
+        return asistenciaActual;
+    }
+
+    public void setAsistenciaActual(Asistencia asistenciaActual) {
+        this.asistenciaActual = asistenciaActual;
     }
 }

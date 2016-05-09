@@ -1,10 +1,14 @@
 package info.wwwood.eventos.model.servicelayer.impl;
 
+import android.content.pm.PackageInstaller;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import info.wwwood.eventos.model.businesslayer.entities.Asistencia;
 import info.wwwood.eventos.model.businesslayer.entities.Evento;
 import info.wwwood.eventos.model.businesslayer.entities.Participante;
 import info.wwwood.eventos.model.businesslayer.entities.Sesion;
@@ -82,8 +86,8 @@ public class EventoService implements IEventoService {
 
 
         Sesion sesion1 = new Sesion();
-        sesion1.setFechaInicio(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("02/05/2016 15:30:00"));
-        sesion1.setFechafin(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("02/05/2016 20:30:00"));
+        sesion1.setFechaInicio(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("09/05/2016 15:30:00"));
+        sesion1.setFechafin(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("10/05/2016 20:30:00"));
         evento.getSesiones().add(sesion1);
 
         Sesion sesion2 = new Sesion();
@@ -157,4 +161,20 @@ public class EventoService implements IEventoService {
     public Evento getEventoByDorsal(String dorsal) throws ParseException {
         return flatFilePersistenceManager.getEventoDao().getEventoByDorsal(dorsal);
     }
+
+    @Override
+    public Asistencia addCurrentAsistenciaToEvent(Evento evento) throws ParseException {
+        Asistencia asistencia=null;
+        for(Sesion sesion : evento.getSesiones()){
+            if (sesion.getFechaInicio().before(new Date()) && sesion.getFechafin().after(new Date())) {
+                asistencia=new Asistencia();
+                asistencia.setFechaInicio(new Date());
+                asistencia.setParticipante(evento.getInscritos().get(0));
+
+            }
+        }
+        return asistencia;
+    }
+
+
 }

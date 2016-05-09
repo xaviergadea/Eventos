@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -18,13 +19,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import info.wwwood.eventos.R;
+import info.wwwood.eventos.model.businesslayer.entities.Asistencia;
 import info.wwwood.eventos.model.businesslayer.entities.Evento;
 import info.wwwood.eventos.model.businesslayer.entities.Participante;
+import info.wwwood.eventos.model.businesslayer.entities.Sesion;
 import info.wwwood.eventos.model.servicelayer.manager.ServiceManager;
 import info.wwwood.eventos.presentationlayer.androidextends.application.PueAndroidApplication;
 
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Timer timer=new Timer();
     private final long DELAY = 1000; // milliseconds
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,23 +111,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.main_btBuscar:
-                    String dorsal=main_etDorsal.getText().toString();
-                    List<Evento> evento=null;
-                    app=(PueAndroidApplication) getApplication();
-                    serviceManager=app.getServiceManager();
+                String dorsal = main_etDorsal.getText().toString();
+                List<Evento> evento = null;
+                app = (PueAndroidApplication) getApplication();
+                serviceManager = app.getServiceManager();
 
-                    try {
-                        app.setEvento(serviceManager.getEventoService().getEventoByDorsal(dorsal));
-                        Participante participante=new Participante();
-                        participante=app.getEvento().getInscritos().get(0);
-                        main_tvNombre.setText(participante.getNombre());
+                try {
+                    app.setEvento(serviceManager.getEventoService().getEventoByDorsal(dorsal));
+                    Participante participante = new Participante();
+                    participante = app.getEvento().getInscritos().get(0);
+                    main_tvNombre.setText(participante.getNombre());
 
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
+                break;
+            case R.id.main_ibStartStop:
+                try {
+                    app.setAsistenciaActual(serviceManager.getEventoService().addCurrentAsistenciaToEvent(app.getEvento()));
+                } catch (Exception ex) {
+
+                }
                 break;
         }
 
