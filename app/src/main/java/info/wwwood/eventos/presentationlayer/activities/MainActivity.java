@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -27,7 +28,7 @@ import info.wwwood.eventos.model.businesslayer.entities.Participante;
 import info.wwwood.eventos.model.servicelayer.manager.ServiceManager;
 import info.wwwood.eventos.presentationlayer.androidextends.application.PueAndroidApplication;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     private PueAndroidApplication app;
     private ServiceManager serviceManager;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button main_btBuscar=null;
     private EditText main_etDorsal=null;
     private TextView main_tvNombre=null;
-    private Button main_btIniciar=null;
+    private ImageButton main_ibStartStop=null;
 
     private Timer timer=new Timer();
     private final long DELAY = 1000; // milliseconds
@@ -72,30 +73,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_btBuscar=(Button) findViewById((R.id.main_btBuscar));
         main_btBuscar.setOnClickListener(this);
 
-        main_btIniciar=(Button) findViewById(R.id.main_btIniciar);
-        main_btIniciar.setOnClickListener(this);
+        main_ibStartStop=(ImageButton) findViewById(R.id.main_ibStartStop);
+        main_ibStartStop.setOnClickListener(this);
 
-        main_etDorsal.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-
-                timer.cancel();
-                timer = new Timer();
-                timer.schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                new SearchCorredor().execute(main_etDorsal.getText().toString(),app,main_tvNombre,main_btIniciar);
-                            }
-                        },
-                        DELAY
-                );
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-        });
+        main_etDorsal.addTextChangedListener(this);
     }
 
     @Override
@@ -145,30 +126,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (getCurrentFocus()==main_etDorsal) {
+            timer.cancel();
+            timer = new Timer();
+            timer.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            new SearchCorredor().execute(main_etDorsal.getText().toString(), app, main_tvNombre, main_ibStartStop);
+                        }
+                    },
+                    DELAY
+            );
+        }
+    }
 }
-class SearchCorredor extends AsyncTask<Object, Object, Object> //els 3 objects són per als 3 mètodes implementats a la classe
+class SearchCorredor extends AsyncTask<Object, Object, Evento> //els 3 objects són per als 3 mètodes implementats a la classe
 {
     private PueAndroidApplication app;
     private ServiceManager serviceManager;
 
     private TextView main_tvNombre=null;
-    private Button main_btIniciar=null;
-
+    private ImageButton main_ibStartStop=null;
+    private Evento evento=null;
     @Override
-    protected Object doInBackground(Object... params) { //params és un array de paràmetres de 0 a n
+    protected Evento doInBackground(Object... params) { //params és un array de paràmetres de 0 a n
         app=(PueAndroidApplication) params[1];
+        //PueAndroidApplication app=(PueAndroidApplication) params[1];
         serviceManager=app.getServiceManager();
         String dorsal=params[0].toString();
         main_tvNombre=(TextView) params[2];
-        main_btIniciar=(Button) params[3];
+        main_ibStartStop=(ImageButton) params[3];
 
         try {
-            app.setEvento(serviceManager.getEventoService().getEventoByDorsal(dorsal));
+            evento=serviceManager.getEventoService().getEventoByDorsal(dorsal);
+            app.setEvento(evento);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return main_btIniciar;
+        return evento;
 
     }
 
@@ -178,19 +188,19 @@ class SearchCorredor extends AsyncTask<Object, Object, Object> //els 3 objects s
     }
 
     @Override
-    protected void onPostExecute(Object result) {
+    protected void onPostExecute(Evento result) {
 
         super.onPostExecute(result);
 
         try {
             if (app.getEvento()==null) {
                 main_tvNombre.setText("");
-                main_btIniciar.setVisibility(View.INVISIBLE);
+                main_ibStartStop.setVisibility(View.INVISIBLE);
             } else {
                 Participante participante=new Participante();
                 participante = app.getEvento().getInscritos().get(0);
                 main_tvNombre.setText(participante.getNombre());
-                main_btIniciar.setVisibility(View.VISIBLE);
+                main_ibStartStop.setVisibility(View.VISIBLE);
             }
 
         } catch (Exception ex){

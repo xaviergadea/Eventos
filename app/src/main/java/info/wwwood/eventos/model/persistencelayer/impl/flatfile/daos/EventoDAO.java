@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -50,17 +51,36 @@ public class EventoDAO implements IEventoDAO {
     public Evento getEventoByDorsal(String dorsal){
         Gson gson=new Gson();
         InputStreamReader isr=null;
-        BufferedReader fin=null;
+        //BufferedReader fin=null;
 
         try{
+            /* CODI ANTIC
+
             int indexReturn=-1;
             List<Participante> participantes = new ArrayList<Participante>();
-            Participante participante=new Participante();
+            Participante participante=new Participante();*/
 
-            isr=new InputStreamReader(context.openFileInput("eventos.json"));
+            /*isr=new InputStreamReader(context.openFileInput("eventos.json"));
             fin=new BufferedReader(isr);
             String texto = fin.readLine();
-            isr.close();
+            isr.close();*/
+
+            List<Evento> eventos=getEventosFromFlatFile();
+
+            Evento evento=null;
+            for (Evento e:eventos){
+                for (Participante inscrito:e.getInscritos()){
+                    if(inscrito.getDorsal().equals(dorsal)){
+                        e.setInscritos(new ArrayList<Participante>());
+                        e.getInscritos().add(inscrito);
+                        evento=e;
+                        break;
+                    }
+                }
+            }
+            return evento;
+
+            /* CODI ANTIC
 
             Evento eventoReturn=new Evento();
             Evento[]  eventos = gson.fromJson(texto, Evento[] .class);
@@ -83,7 +103,7 @@ public class EventoDAO implements IEventoDAO {
             } else {
                 eventoReturn = eventos[indexReturn];
                 return eventoReturn;
-            }
+            }*/
 
         } catch (Exception ex){
             throw new RuntimeException("Error al leer el fichero eventos.json");
@@ -91,5 +111,30 @@ public class EventoDAO implements IEventoDAO {
         }
 
 
+    }
+    private List<Evento> getEventosFromFlatFile(){
+        try{
+
+
+
+        Gson gson=new Gson();
+        InputStreamReader isr=null;
+
+        List<Participante> participantes = new ArrayList<Participante>();
+        Participante participante=new Participante();
+
+        BufferedReader fin=new BufferedReader(
+                new InputStreamReader(
+                        context.openFileInput("eventos.json")
+                )
+        );
+        String eventosJSON = fin.readLine();
+        fin.close();
+
+        return gson.fromJson(eventosJSON,new TypeToken<List<Evento>>(){}.getType());
+        } catch (Exception ex){
+            throw new RuntimeException("Error al leer el fichero eventos.json");
+
+        }
     }
 }

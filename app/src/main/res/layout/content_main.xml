@@ -31,24 +31,30 @@
         android:layout_height="wrap_content"
         android:text="Buscar"
         android:id="@+id/main_btBuscar"
-        android:layout_below="@+id/main_etDorsal"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp" />
+        android:layout_alignBottom="@+id/main_etDorsal"
+        android:layout_alignEnd="@+id/main_etDorsal"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/main_tvNombre"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:editable="false"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:layout_below="@+id/main_ibStartStop"
+        android:layout_alignParentStart="true" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Iniciar"
-        android:id="@+id/main_btIniciar"
-        android:layout_alignBottom="@+id/main_tvNombre"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible" />
+        android:id="@+id/main_ibStartStop"
+        android:src="@drawable/start"
+        android:background="@android:color/transparent"
+        android:adjustViewBounds="false"
+        android:visibility="invisible"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/main_etDorsal"
+        android:layout_toStartOf="@+id/main_btBuscar" />
 
 </RelativeLayout>

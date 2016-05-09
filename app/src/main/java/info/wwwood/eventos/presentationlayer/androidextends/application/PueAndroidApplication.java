@@ -20,20 +20,15 @@ public class PueAndroidApplication extends Application {
     public List<Evento> getEventos() {
         return eventos;
     }
-    public Evento getEvento() {
-        return evento;
-    }
-
     public void setEventos(List<Evento> eventos) {
         this.eventos = eventos;
     }
-    public void setEvento(Evento evento) {
 
-        this.evento=evento;
+    public Evento getEvento() {
+        return evento;
     }
-    /*public Evento getEventoByDorsal(String dorsal) {
-        this.evento = evento;
-    }*/
+    public void setEvento(Evento evento) { this.evento=evento; }
+
     public ServiceManager getServiceManager() {
         return serviceManager;
     }
@@ -41,5 +36,6 @@ public class PueAndroidApplication extends Application {
         super(); // crida al constructor de la classe application
         eventos=new ArrayList<Evento>();
         serviceManager=new ServiceManager(this);
+        evento=null;
     }
 }
