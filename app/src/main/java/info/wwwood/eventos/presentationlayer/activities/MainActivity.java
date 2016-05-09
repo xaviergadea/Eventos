@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_ibStartStop:
                 try {
                     app.setAsistenciaActual(serviceManager.getEventoService().addCurrentAsistenciaToEvent(app.getEvento()));
+
                 } catch (Exception ex) {
 
                 }

@@ -170,7 +170,7 @@ public class EventoService implements IEventoService {
                 asistencia=new Asistencia();
                 asistencia.setFechaInicio(new Date());
                 asistencia.setParticipante(evento.getInscritos().get(0));
-
+                sesion.getAsistencias().add(asistencia);
             }
         }
         return asistencia;
