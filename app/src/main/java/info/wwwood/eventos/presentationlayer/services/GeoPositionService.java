@@ -23,6 +23,7 @@ public class GeoPositionService extends Service {
         super.onCreate();
         locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
         geoPositionListener=new GeoPositionListener(((PueAndroidApplication)getApplication()).getAsistenciaActual());
+        iniciarPosicionamiento();
     }
 
     private void iniciarPosicionamiento(){

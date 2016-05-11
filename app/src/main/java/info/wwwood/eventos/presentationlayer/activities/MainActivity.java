@@ -1,6 +1,7 @@
 package info.wwwood.eventos.presentationlayer.activities;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -35,6 +36,8 @@ import info.wwwood.eventos.model.businesslayer.entities.Participante;
 import info.wwwood.eventos.model.businesslayer.entities.Sesion;
 import info.wwwood.eventos.model.servicelayer.manager.ServiceManager;
 import info.wwwood.eventos.presentationlayer.androidextends.application.PueAndroidApplication;
+import info.wwwood.eventos.presentationlayer.listeners.GeoPositionListener;
+import info.wwwood.eventos.presentationlayer.services.GeoPositionService;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Timer timer=new Timer();
     private final long DELAY = 1000; // milliseconds
 
+    private GeoPositionService geoPositionService;
+    Intent intentGepositionService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,9 +143,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (((ImageButton)v).getDrawable().getConstantState() == getDrawable(R.drawable.start).getConstantState()){
                         iniciarAsistencia();
                         ((ImageButton)v).setImageResource(R.drawable.stop);
+
                     } else {
                         ((ImageButton)v).setImageResource(R.drawable.start);
                         //TODO PARAR EL TRACKING
+
+
                     }
 
 
@@ -153,6 +161,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void iniciarAsistencia() throws ParseException {
         app.setAsistenciaActual(serviceManager.getEventoService().addCurrentAsistenciaToEvent(app.getEvento()));
+        //if (app.getAsistenciaActual()!=null) {
+        geoPositionService = new GeoPositionService();
+
+        intentGepositionService = new Intent(this, GeoPositionService.class);
+        startService(intentGepositionService);
+        //}
     }
 
     @Override

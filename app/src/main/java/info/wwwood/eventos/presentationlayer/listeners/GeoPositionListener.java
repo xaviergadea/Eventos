@@ -3,6 +3,7 @@ package info.wwwood.eventos.presentationlayer.listeners;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.Date;
 
@@ -26,6 +27,10 @@ public class GeoPositionListener implements LocationListener {
         posicion.setLongitud(location.getLongitude());
         posicion.setPrecision((int)location.getAccuracy());
         posicion.setFecha(new Date());
+        asistencia.getRecorrido().add(posicion);
+
+        Log.d("Nueva Posición!",String.valueOf(asistencia.getRecorrido().size()));
+
     }
 
     @Override
