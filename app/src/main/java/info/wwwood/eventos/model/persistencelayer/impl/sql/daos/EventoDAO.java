@@ -51,11 +51,12 @@ public class EventoDAO implements IEventoDAO {
             if (evento.getInsertedDBDate()==null){
                 int _id=0;
 
-                //PER SABER EL SEGÜENT ID DE LA TAULA QUE S'INSERTERÀ
+                //PER SABER EL SEGÜENT ID DE LA TAULA QUE S'INSERTARÀ
                 Cursor cursor=db.query("sqlite_sequence",new String[]{"seq"},"name=?",new String[]{AppUtils.TABLA_EVENTOS},null,null,null);
                 if (cursor.moveToNext()){
                     _id=cursor.getInt(cursor.getColumnIndex("seq"));
                 }
+                cursor.close();
                 _id++;
                 evento.setId(_id);
                 evento.setInsertedDBDate(new Date());
@@ -65,9 +66,16 @@ public class EventoDAO implements IEventoDAO {
 
                 db.insert(AppUtils.TABLA_EVENTOS,null,contentValues);
             }
+            //HACEMOS UN UPDATE
+            else {
+                json=gson.toJson(evento);
+                contentValues.put(AppUtils.TABLA_EVENTOS_EVENTO,json);
+                db.update(AppUtils.TABLA_EVENTOS,contentValues,AppUtils.TABLA_EVENTOS_ID,new String[]{String.valueOf(evento.getId())});
+            }
         }
-
-
+        if (db.isOpen()){
+            db.close();
+        }
     }
 
     @Override

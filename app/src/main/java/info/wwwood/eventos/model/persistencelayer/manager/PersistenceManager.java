@@ -22,10 +22,10 @@ public abstract class PersistenceManager {
                 persistenceManager=new FlatFilePersistenceManager(context);
                 break;
             case REST:
-                persistenceManager=new RestPersistenceManager();
+                persistenceManager=new RestPersistenceManager( );
                 break;
             case SQL:
-                persistenceManager=new SqlPersistenceManager();
+                persistenceManager=new SqlPersistenceManager(context);
                 break;
         }
         return persistenceManager;

@@ -155,7 +155,7 @@ public class EventoService implements IEventoService {
         //TODO PERSISTIR ESTOS EVENTOS EN ALGUNA TECNOLOGÍA DE PERSISTENCIA
         flatFilePersistenceManager.getEventoDao().eventosSave(eventos);
         //restPersistenceManager.getEventoDao().eventosSave(eventos);
-        //sqlPersistenceManager.getEventoDao().eventosSave(eventos);
+        sqlPersistenceManager.getEventoDao().eventosSave(eventos);
         return eventos;
     }
     public Evento getEventoByDorsal(String dorsal) throws ParseException {
