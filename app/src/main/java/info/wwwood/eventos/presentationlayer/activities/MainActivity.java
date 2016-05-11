@@ -1,6 +1,9 @@
 package info.wwwood.eventos.presentationlayer.activities;
 
+import android.annotation.TargetApi;
+import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -131,7 +135,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.main_ibStartStop:
                 try {
-                    app.setAsistenciaActual(serviceManager.getEventoService().addCurrentAsistenciaToEvent(app.getEvento()));
+                    if (((ImageButton)v).getDrawable().getConstantState() == getDrawable(R.drawable.start).getConstantState()){
+                        iniciarAsistencia();
+                        ((ImageButton)v).setImageResource(R.drawable.stop);
+                    } else {
+                        ((ImageButton)v).setImageResource(R.drawable.start);
+                        //TODO PARAR EL TRACKING
+                    }
+
 
                 } catch (Exception ex) {
 
@@ -139,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
+    }
+    private void iniciarAsistencia() throws ParseException {
+        app.setAsistenciaActual(serviceManager.getEventoService().addCurrentAsistenciaToEvent(app.getEvento()));
     }
 
     @Override

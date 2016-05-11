@@ -86,8 +86,8 @@ public class EventoService implements IEventoService {
 
 
         Sesion sesion1 = new Sesion();
-        sesion1.setFechaInicio(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("09/05/2016 15:30:00"));
-        sesion1.setFechafin(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("10/05/2016 20:30:00"));
+        sesion1.setFechaInicio(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("11/05/2016 15:30:00"));
+        sesion1.setFechafin(new SimpleDateFormat("dd/MM/yy HH:mm:ss").parse("31/12/2016 20:30:00"));
         evento.getSesiones().add(sesion1);
 
         Sesion sesion2 = new Sesion();
